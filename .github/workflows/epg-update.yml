@@ -24,7 +24,10 @@ jobs:
       run: pip install requests
 
     - name: EPG verisini indir
-      run: python update_epg.py
+      run: |
+        python update_epg.py
+        echo "Oluşan dosyalar:"
+        ls -lah
 
     - name: Değişiklikleri GitHub'a gönder
       env:
@@ -32,6 +35,6 @@ jobs:
       run: |
         git config --global user.name "epg-bot"
         git config --global user.email "epg@bot.com"
-        git add epg.xml
-        git commit -m "🔄 EPG otomatik güncellendi" || echo "Değişiklik yok"
-        git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }} HEAD:main
+        git add epg.xml || echo "📁 epg.xml zaten güncel veya yok"
+        git commit -m "🔄 EPG otomatik güncellendi" || echo "✅ Commit edilecek değişiklik yok"
+        git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }} HEAD:main || echo "📤 Push edilecek değişiklik yok"
