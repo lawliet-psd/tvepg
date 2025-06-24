@@ -14,6 +14,7 @@ jobs:
       uses: actions/checkout@v4
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
+        persist-credentials: true
 
     - name: Python kurulumu
       uses: actions/setup-python@v5
@@ -26,7 +27,7 @@ jobs:
     - name: EPG verisini indir
       run: |
         python update_epg.py
-        echo "Oluşan dosyalar:"
+        echo "Dosyalar:"
         ls -lah
 
     - name: Değişiklikleri GitHub'a gönder
@@ -37,4 +38,4 @@ jobs:
         git config --global user.email "epg@bot.com"
         git add epg.xml || echo "📁 epg.xml zaten güncel veya yok"
         git commit -m "🔄 EPG otomatik güncellendi" || echo "✅ Commit edilecek değişiklik yok"
-        git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }} HEAD:main || echo "📤 Push edilecek değişiklik yok"
+        git push origin main || echo "📤 Push edilecek değişiklik yok"
