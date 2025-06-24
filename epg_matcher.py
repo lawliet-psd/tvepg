@@ -9,7 +9,7 @@ OUTPUT_FILE = "m3u-epg.m3u"
 
 # Özel kanal eşleştirme varyantları
 ALTERNATIVE_NAMES = {
-    "tv85": ["tv 8.5", "tv8.5", "tv 8 buçuk", "tv8 bucuk", "tvsekizbucuk", "tv8bucuk"],
+    "tv85": ["tv 8.5", "tv8.5", "tv 8 buçuk", "tv8,5", "tv8 bucuk", "tvsekizbucuk", "tv8bucuk"],
 }
 
 def fetch_m3u():
