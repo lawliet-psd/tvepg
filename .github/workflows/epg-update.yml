@@ -27,11 +27,11 @@ jobs:
       run: python update_epg.py
 
     - name: Değişiklikleri GitHub'a gönder
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         git config --global user.name "epg-bot"
         git config --global user.email "epg@bot.com"
         git add epg.xml
         git commit -m "🔄 EPG otomatik güncellendi" || echo "Değişiklik yok"
-        git push origin HEAD:main
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }} HEAD:main
