@@ -1,6 +1,6 @@
 import requests
 
-XML_URL = "https://belgeselsemo.com.tr/yayin-akisi2/xml/turkey1.xml"
+XML_URL = "https://belgeselsemo.com.tr/yayin-akisi2/xml/turkey3.xml"
 OUTPUT_FILE = "epg.xml"
 
 def update_epg():
