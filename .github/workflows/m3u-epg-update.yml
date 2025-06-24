@@ -1,4 +1,4 @@
-name: EPG Uyumlu M3U Oluşturucu
+name: EPG Uyumlu M3U ve Kanal Adı Düzeltici
 
 on:
   schedule:
@@ -23,7 +23,7 @@ jobs:
       - name: requests modülü
         run: pip install requests
 
-      - name: M3U EPG eşle ve oluştur
+      - name: M3U EPG eşle ve kanal adlarını düzelt
         run: |
           python epg_matcher.py
 
@@ -34,5 +34,5 @@ jobs:
           git config --global user.name "epg-bot"
           git config --global user.email "epg@bot.com"
           git add m3u-epg.m3u || echo "Dosya yok"
-          git commit -m "🔄 EPG uyumlu m3u güncellendi" || echo "Değişiklik yok"
+          git commit -m "🔄 Kanal adları ve EPG ile güncellenmiş m3u oluşturuldu" || echo "Değişiklik yok"
           git push origin main || echo "Push yok"
