@@ -29,14 +29,18 @@ def process_m3u(m3u_data, epg_map):
     for i in range(len(lines)):
         line = lines[i]
         if line.startswith("#EXTINF:"):
-            name_match = re.search(r",(.*)$", line)
-            if name_match:
-                ch_name = name_match.group(1).strip().lower()
-                tvg_id = epg_map.get(ch_name, "")
-                new_line = re.sub(r'#EXTINF:-1', f'#EXTINF:-1 tvg-id="{tvg_id}"', line)
-                output.append(new_line)
-            else:
-                output.append(line)
+            # Kanal adını yakala
+            name_match = re.search(r',(.*)$', line)
+            ch_name = name_match.group(1).strip().lower() if name_match else ""
+            tvg_id = epg_map.get(ch_name, "")
+
+            # Mevcut tvg-id sil
+            line = re.sub(r'tvg-id="[^"]*"', '', line)
+            # Fazla boşlukları düzelt
+            line = re.sub(r'\s+', ' ', line)
+            # tvg-id'yi doğru şekilde ekle
+            line = line.replace("#EXTINF:-1", f'#EXTINF:-1 tvg-id="{tvg_id}"')
+            output.append(line.strip())
         else:
             output.append(line)
     return "\n".join(output)
