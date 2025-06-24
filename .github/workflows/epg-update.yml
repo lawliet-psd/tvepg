@@ -1,4 +1,4 @@
-name: Günlük EPG Güncelleme
+name: EPG Güncelle
 
 on:
   schedule:
@@ -6,36 +6,34 @@ on:
   workflow_dispatch:
 
 jobs:
-  update-epg:
+  epg-update:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Repo klonla
-      uses: actions/checkout@v4
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        persist-credentials: true
+      - name: Repo klonla
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
 
-    - name: Python kurulumu
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.x'
+      - name: Python kurulumu
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
 
-    - name: Bağımlılıkları yükle
-      run: pip install requests
+      - name: Bağımlılıkları yükle
+        run: pip install requests
 
-    - name: EPG verisini indir
-      run: |
-        python update_epg.py
-        echo "Dosyalar:"
-        ls -lah
+      - name: EPG Verisini Güncelle
+        run: |
+          python update_epg.py
+          ls -lah
 
-    - name: Değişiklikleri GitHub'a gönder
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        git config --global user.name "epg-bot"
-        git config --global user.email "epg@bot.com"
-        git add epg.xml || echo "📁 epg.xml zaten güncel veya yok"
-        git commit -m "🔄 EPG otomatik güncellendi" || echo "✅ Commit edilecek değişiklik yok"
-        git push origin main || echo "📤 Push edilecek değişiklik yok"
+      - name: Güncellemeleri GitHub'a gönder
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.name "epg-bot"
+          git config --global user.email "epg@bot.com"
+          git add epg.xml || echo "Dosya yok"
+          git commit -m "🔄 EPG otomatik güncellendi" || echo "Değişiklik yok"
+          git push origin main || echo "Push yapılmadı"
